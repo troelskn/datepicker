@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN'
+'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html>
+<head>
+  <title>Datepicker with Prototype.js</title>
+  <script type="text/javascript" src="drivers/prototype-1.6.1-RC3.js"></script>
+  <script type="text/javascript" src="datepicker.js"></script>
+</head>
+<body>
+<p>
+  This is a Datepicker. (<em>a couple of them actually</em>)
+</p>
+<form action="" method="get">
+<input type="text" name="mydate1" id="mydate1" value="2005-01-01 08:09:10" />
+<script type="text/javascript">
+datePicker("mydate1");
+</script>
+
+<input type="text" name="mydate2" id="mydate2" value="2005-01-01 08:09:10" />
+<script type="text/javascript">
+datePicker("mydate2", {nullable: true});
+</script>
+
+<input type="text" name="mydate3" id="mydate3" value="2005-01-01 08:09:10" />
+<script type="text/javascript">
+datePicker("mydate3", {mode: minikit.DatePicker.MODE_DATE_TIME});
+</script>
+
+<input type="text" name="mydate4" id="mydate4" value="2005-01-01 08:09:10" />
+<script type="text/javascript">
+datePicker("mydate4", {mode: minikit.DatePicker.MODE_DATE_TIME_SECONDS});
+</script>
+
+
+<p>
+<input type="submit" />
+</p>
+</form>
+</body>
+</html>
