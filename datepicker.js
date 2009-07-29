@@ -9,7 +9,6 @@
   *
   * Version : 22. jul 2009
   */
-
 if (typeof(minikit) == "undefined") {
   minikit = {};
 }
@@ -50,6 +49,104 @@ if (typeof(window.Prototype) != "undefined") {
     } else {
       element.fireEvent('on' + eventName, document.createEventObject());
     }
+  };
+} else if (typeof(window.jQuery) != "undefined") {
+  // jQuery bindings
+  minikit.$ = function(id) {
+    return document.getElementById(id);
+  };
+  minikit.callLater = function(func, seconds) {
+    window.setTimeout(func, 1000 * seconds);
+  };
+  minikit.createDOM = function(name, attrs) {
+    var escapeHTML = function(s) {
+      return s.replace(/&/g, "&amp;"
+      ).replace(/"/g, "&quot;" //"
+      ).replace(/</g, "&lt;"
+      ).replace(/>/g, "&gt;");
+    };
+
+    if (!attrs) {
+      attrs = [];
+    }
+    if (window.ActiveXObject) {
+      var contents = "";
+      if ('name' in attrs) {
+        contents += ' name="' + escapeHTML(attrs.name) + '"';
+      }
+      if (name == 'input' && 'type' in attrs) {
+        contents += ' type="' + escapeHTML(attrs.type) + '"';
+      }
+      if (name == 'label' && 'for' in attrs) {
+        contents += ' for="' + escapeHTML(attrs["for"]) + '"';
+      }
+      if (contents) {
+        name = "<" + name + contents + ">";
+      }
+    }
+    var elem = document.createElement(name);
+    if (attrs) {
+      if (window.ActiveXObject) {
+        var renames = {
+          "class": "className",
+          "checked": "defaultChecked",
+          "usemap": "useMap",
+          "for": "htmlFor",
+          "readonly": "readOnly"
+        }
+        for (k in attrs) {
+          v = attrs[k];
+          var renamed = renames[k];
+          if (k == "style" && typeof(v) == "string") {
+            elem.style.cssText = v;
+          } else if (typeof(renamed) == "string") {
+            elem[renamed] = v;
+          } else {
+            elem.setAttribute(k, v);
+          }
+        }
+      } else {
+        for (var k in attrs) {
+          elem.setAttribute(k, attrs[k]);
+        }
+      }
+    }
+    return elem;
+  };
+  minikit.bind = function(fn, object) {
+    if (typeof(fn) == "string") {
+      fn = object[fn];
+    }
+    var args = [];
+    for (var i=2; i<arguments.length; ++i) {
+      args.push(arguments[i]);
+    }
+    return function() {
+      var args2 = [];
+      for (var i = 0; i < arguments.length; i++) {
+        args2.push(arguments[i]);
+      }
+      return fn.apply(object, args.concat(args2));
+    }
+  };
+  minikit.event = {};
+  minikit.event.connect = function(element, eventName, handler) {
+    eventName = eventName.replace(/^on/, "");
+    $(element).bind(eventName, handler);
+    return [element, eventName, handler];
+  };
+  minikit.event.disconnect = function(signal) {
+    $(signal[0]).unbind(signal[1], signal[2]);
+  };
+  minikit.event.keyCode = function(e) {
+    return e.which;
+  };
+  minikit.event.stop = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  minikit.event.signal = function(element, eventName) {
+    $(element).trigger(eventName.replace(/^on/, ""));
   };
 } else if (typeof(window.MochiKit) != "undefined") {
   // MochiKit bindings
