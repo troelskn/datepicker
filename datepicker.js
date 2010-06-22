@@ -7,7 +7,7 @@
   *
   * License: public domain
   *
-  * Version : 22. jul 2009
+  * Version : 22. jun 2010
   */
 if (typeof(minikit) == "undefined") {
   minikit = {};
