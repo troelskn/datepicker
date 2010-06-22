@@ -220,8 +220,8 @@ minikit.DatePicker = function(args) {
 
   // default values to start out with
   this.setValue(new Date());
-  this.startYear = this.date.getRealYear() - 10;
-  this.endYear = this.date.getRealYear() + 10;
+  this.startYear = args.startYear || (this.date.getRealYear() - 10);
+  this.endYear = args.endYear || (this.date.getRealYear() + 10);
 }
 
 minikit.DatePicker.MODE_DATE = 1;
@@ -609,7 +609,6 @@ minikit.DatePicker.prototype.viewChanged = function() {
 }
 
 minikit.DatePicker.prototype.detach = function() {
-  this.supertype.detach.apply(this, arguments);
   this.view.container.parentNode.removeChild(this.view.container);
   if (this.view.field.type.toLowerCase() != "hidden") {
     this.view.field.style.display = "";
